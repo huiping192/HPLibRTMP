@@ -5,7 +5,7 @@
 [![License](https://img.shields.io/cocoapods/l/HPLibRTMP.svg?style=flat)](https://cocoapods.org/pods/HPLibRTMP)
 [![Platform](https://img.shields.io/cocoapods/p/HPLibRTMP.svg?style=flat)](https://cocoapods.org/pods/HPLibRTMP)
 
-librtmp objective-c warper.  https://github.com/pili-engineering/pili-librtmp
+librtmp objective-c wrapper.  https://github.com/pili-engineering/pili-librtmp
 
 ## Example
 
