@@ -8,20 +8,20 @@
 @protocol HPStreamSocketDelegate <NSObject>
 
 /** callback buffer current status (回调当前缓冲区情况，可实现相关切换帧率 码率等策略)*/
-- (void)socketBufferStatus:(nullable id <HPStreamSocket>)socket status:(HPLiveBuffferState)status;
+- (void)socketBufferStatus:(id <HPStreamSocket> _Nonnull)socket status:(HPLiveBuffferState)status;
 /** callback socket current status (回调当前网络情况) */
-- (void)socketStatus:(nullable id <HPStreamSocket>)socket status:(HPLiveState)status;
+- (void)socketStatus:(id <HPStreamSocket> _Nonnull)socket status:(HPLiveState)status;
 /** callback socket errorcode */
-- (void)socketDidError:(nullable id <HPStreamSocket>)socket errorCode:(HPLiveSocketErrorCode)errorCode;
+- (void)socketDidError:(id <HPStreamSocket> _Nonnull)socket errorCode:(HPLiveSocketErrorCode)errorCode;
 @optional
 /** callback debugInfo */
-- (void)socketDebug:(nullable id <HPStreamSocket>)socket debugInfo:(nullable HPLiveDebug *)debugInfo;
+- (void)socketDebug:(id <HPStreamSocket> _Nonnull)socket debugInfo:(HPLiveDebug * _Nonnull)debugInfo;
 @end
 
 @protocol HPStreamSocket <NSObject>
 - (void)start;
 - (void)stop;
-- (void)sendFrame:(nullable HPFrame *)frame;
+- (void)sendFrame:(HPFrame * _Nonnull)frame;
 - (void)setDelegate:(nullable id <HPStreamSocketDelegate>)delegate;
 @optional
 - (instancetype _Nonnull)initWithStream:(HPLiveStreamInfo * _Nonnull)stream;

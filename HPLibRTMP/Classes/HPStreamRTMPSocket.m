@@ -125,7 +125,7 @@ SAVC(mp4a);
     [self clean];
 }
 
-- (void)sendFrame:(HPFrame *)frame {
+- (void)sendFrame:(HPFrame * _Nonnull)frame {
     if (!frame) return;
     [self.buffer appendObject:frame];
     
