@@ -1,6 +1,0 @@
-framework module HPLibRTMP {
-  umbrella header "HPLibRTMP-umbrella.h"
-
-  export *
-  module * { export * }
-}

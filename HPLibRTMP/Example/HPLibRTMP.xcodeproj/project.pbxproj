@@ -325,10 +325,12 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-HPLibRTMP_Example/Pods-HPLibRTMP_Example-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/HPLibRTMP/HPLibRTMP.framework",
+				"${BUILT_PRODUCTS_DIR}/pili-librtmp/pili_librtmp.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/HPLibRTMP.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/pili_librtmp.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
