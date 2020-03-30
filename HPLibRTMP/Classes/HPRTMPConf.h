@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 
-@interface HPRTMPConfiguration : NSObject
+@interface HPRTMPConf : NSObject
 
 #pragma mark -- RTMP URL
  /// 上传地址

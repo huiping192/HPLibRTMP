@@ -6,11 +6,19 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "HPRTMPConf.h"
 
-NS_ASSUME_NONNULL_BEGIN
+@class HPRTMP;
+@protocol HPRTMPDelegate <NSObject>
+@optional
+- (void)rtmp:(HPRTMP *)rtmp error:(NSError *)error;
+@end
+
 
 @interface HPRTMP : NSObject
 
-@end
+@property (nonatomic, weak) id<HPRTMPDelegate> delegate;
 
-NS_ASSUME_NONNULL_END
+-(HPRTMP *)initWithConf:(HPRTMPConf *)conf;
+
+@end

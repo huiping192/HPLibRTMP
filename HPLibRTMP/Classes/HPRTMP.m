@@ -7,7 +7,6 @@
 
 #import "HPRTMP.h"
 #import <pili_librtmp/rtmp.h>
-#import "HPRTMPConfiguration.h"
 
 #define RTMP_RECEIVE_TIMEOUT    2
 
@@ -39,13 +38,18 @@ SAVC(mp4a);
 
 @property (nonatomic, assign) RTMPError error;
 
-@property (nonatomic, strong) HPRTMPConfiguration *conf;
+@property (nonatomic, strong) HPRTMPConf *conf;
 
 @end
 
 @implementation HPRTMP
 
-
+-(HPRTMP *)initWithConf:(HPRTMPConf *)conf {
+    if (self = [super init]) {
+       self.conf = conf;
+    }
+    return self;
+}
 
 -(void)close {
     if (_rtmp != NULL) {
@@ -282,11 +286,15 @@ Failed:
 
 
 #pragma mark -- CallBack
-void RTMPErrorCallback(RTMPError *error, void *userData) {
-//    HPStreamRTMPSocket *socket = (__bridge HPStreamRTMPSocket *)userData;
-//    if (error->code < 0) {
-//        [socket reconnect];
-//    }
+void RTMPErrorCallback(RTMPError *rtmpError, void *userData) {
+    HPRTMP *rtmp = (__bridge HPRTMP *)userData;
+    if (rtmp.delegate && [rtmp.delegate respondsToSelector:@selector(rtmp:error:)]) {
+        NSMutableDictionary* details = [NSMutableDictionary dictionary];
+        NSString *msg = [NSString stringWithUTF8String:rtmpError->message];
+        [details setValue:msg forKey:NSLocalizedDescriptionKey];
+        NSError *error = [[NSError alloc] initWithDomain:@"com.huiping192.HPRTMP.error" code:rtmpError->code userInfo:details];
+        [rtmp.delegate rtmp:rtmp error:error];
+    }
 }
 
 void ConnectionTimeCallback(PILI_CONNECTION_TIME *conn_time, void *userData) {
