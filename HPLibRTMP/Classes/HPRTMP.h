@@ -21,4 +21,13 @@
 
 -(HPRTMP *)initWithConf:(HPRTMPConf *)conf;
 
+- (NSInteger)connect;
+-(void)close;
+
+- (void)sendVideoHeaderWithSPS:(NSData *)spsData pps:(NSData *)ppsData;
+- (void)sendVideoWithVideoData:(NSData *)frameData timestamp:(uint64_t)timestamp isKeyFrame:(BOOL)isKeyFrame;
+
+- (void)sendAudioHeader:(NSData *)header;
+- (void)sendAudioWithAudioData:(NSData *)audioData timestamp:(uint64_t)timestamp;
+
 @end
