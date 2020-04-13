@@ -287,11 +287,17 @@ Failed:
 
 #pragma mark -- CallBack
 void RTMPErrorCallback(RTMPError *rtmpError, void *userData) {
+    // not error
+    if(rtmpError->code >= 0) {
+        return;
+    }
     HPRTMP *rtmp = (__bridge HPRTMP *)userData;
     if (rtmp.delegate && [rtmp.delegate respondsToSelector:@selector(rtmp:error:)]) {
         NSMutableDictionary* details = [NSMutableDictionary dictionary];
-        NSString *msg = [NSString stringWithUTF8String:rtmpError->message];
-        [details setValue:msg forKey:NSLocalizedDescriptionKey];
+       if(rtmpError->message != nil) {
+            NSString *msg = [NSString stringWithUTF8String:rtmpError->message];
+            [details setValue:msg forKey:NSLocalizedDescriptionKey];
+        }
         NSError *error = [[NSError alloc] initWithDomain:@"com.huiping192.HPRTMP.error" code:rtmpError->code userInfo:details];
         [rtmp.delegate rtmp:rtmp error:error];
     }
