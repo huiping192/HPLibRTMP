@@ -6,7 +6,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "HPRTMPConf.h"
 
 @class HPRTMP;
 @protocol HPRTMPDelegate <NSObject>
@@ -19,7 +18,7 @@
 
 @property (nonatomic, weak) id<HPRTMPDelegate> delegate;
 
--(HPRTMP *)initWithConf:(HPRTMPConf *)conf;
+-(HPRTMP *)initWithRTMPURL:(NSString *)url;
 
 - (NSInteger)connect;
 -(void)close;
