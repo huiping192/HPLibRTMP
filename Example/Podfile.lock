@@ -1,5 +1,5 @@
 PODS:
-  - HPLibRTMP (0.1.0):
+  - HPLibRTMP (0.0.2):
     - pili-librtmp
   - pili-librtmp (1.0.7)
 
@@ -15,7 +15,7 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  HPLibRTMP: 01e7558ef08f8c401fcce055fe4fb1aa03b5efaa
+  HPLibRTMP: 76870cfca60a290e5672655a8b3e98b7e6086901
   pili-librtmp: e8a06a45b0a1a166c48ae6dc718171c0963f32ea
 
 PODFILE CHECKSUM: 2248488eb5bbd67c526b9a2aeaf724322db8635e

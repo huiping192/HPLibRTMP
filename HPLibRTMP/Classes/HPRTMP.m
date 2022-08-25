@@ -16,20 +16,8 @@ static const PILI_AVal av_setDataFrame = AVC("@setDataFrame");
 static const PILI_AVal av_SDKVersion = AVC("HPRTMP 0.1.0");
 SAVC(onMetaData);
 SAVC(duration);
-SAVC(width);
-SAVC(height);
-SAVC(videocodecid);
-SAVC(videodatarate);
-SAVC(framerate);
-SAVC(audiocodecid);
-SAVC(audiodatarate);
-SAVC(audiosamplerate);
-SAVC(audiosamplesize);
-SAVC(stereo);
 SAVC(encoder);
 SAVC(fileSize);
-SAVC(avc1);
-SAVC(mp4a);
 
 
 @interface HPRTMP()
@@ -38,15 +26,15 @@ SAVC(mp4a);
 
 @property (nonatomic, assign) RTMPError error;
 
-@property (nonatomic, strong) HPRTMPConf *conf;
+@property (nonatomic, assign) NSString *url;
 
 @end
 
 @implementation HPRTMP
 
--(HPRTMP *)initWithConf:(HPRTMPConf *)conf {
+-(HPRTMP *)initWithRTMPURL:(NSString *)url {
     if (self = [super init]) {
-       self.conf = conf;
+       self.url = url;
     }
     return self;
 }
@@ -61,7 +49,7 @@ SAVC(mp4a);
 
 
 - (NSInteger)connect {
-    char *push_url = (char *)[self.conf.url cStringUsingEncoding:NSASCIIStringEncoding];
+    char *push_url = (char *)[self.url cStringUsingEncoding:NSASCIIStringEncoding];
     //由于摄像头的timestamp是一直在累加，需要每次得到相对时间戳
     //分配与初始化
     _rtmp = PILI_RTMP_Alloc();
@@ -125,24 +113,6 @@ Failed:
 
     enc = PILI_AMF_EncodeNamedNumber(enc, pend, &av_duration, 0.0);
     enc = PILI_AMF_EncodeNamedNumber(enc, pend, &av_fileSize, 0.0);
-
-    // videosize
-    enc = PILI_AMF_EncodeNamedNumber(enc, pend, &av_width, self.conf.videoSize.width);
-    enc = PILI_AMF_EncodeNamedNumber(enc, pend, &av_height, self.conf.videoSize.height);
-
-    // video
-    enc = PILI_AMF_EncodeNamedString(enc, pend, &av_videocodecid, &av_avc1);
-
-    enc = PILI_AMF_EncodeNamedNumber(enc, pend, &av_videodatarate, self.conf.videoBitrate / 1000.f);
-    enc = PILI_AMF_EncodeNamedNumber(enc, pend, &av_framerate, self.conf.videoFrameRate);
-
-    // audio
-    enc = PILI_AMF_EncodeNamedString(enc, pend, &av_audiocodecid, &av_mp4a);
-    enc = PILI_AMF_EncodeNamedNumber(enc, pend, &av_audiodatarate, self.conf.audioBitrate);
-
-    enc = PILI_AMF_EncodeNamedNumber(enc, pend, &av_audiosamplerate, self.conf.audioSampleRate);
-    enc = PILI_AMF_EncodeNamedNumber(enc, pend, &av_audiosamplesize, 16.0);
-    enc = PILI_AMF_EncodeNamedBoolean(enc, pend, &av_stereo, self.conf.numberOfChannels == 2);
 
     // sdk version
     enc = PILI_AMF_EncodeNamedString(enc, pend, &av_encoder, &av_SDKVersion);
@@ -287,11 +257,17 @@ Failed:
 
 #pragma mark -- CallBack
 void RTMPErrorCallback(RTMPError *rtmpError, void *userData) {
+    // not error
+    if(rtmpError->code >= 0) {
+        return;
+    }
     HPRTMP *rtmp = (__bridge HPRTMP *)userData;
     if (rtmp.delegate && [rtmp.delegate respondsToSelector:@selector(rtmp:error:)]) {
         NSMutableDictionary* details = [NSMutableDictionary dictionary];
-        NSString *msg = [NSString stringWithUTF8String:rtmpError->message];
-        [details setValue:msg forKey:NSLocalizedDescriptionKey];
+       if(rtmpError->message != nil) {
+            NSString *msg = [NSString stringWithUTF8String:rtmpError->message];
+            [details setValue:msg forKey:NSLocalizedDescriptionKey];
+        }
         NSError *error = [[NSError alloc] initWithDomain:@"com.huiping192.HPRTMP.error" code:rtmpError->code userInfo:details];
         [rtmp.delegate rtmp:rtmp error:error];
     }
