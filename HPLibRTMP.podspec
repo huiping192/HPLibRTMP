@@ -30,7 +30,7 @@ TODO: Add long description of the pod here.
   s.ios.deployment_target = '8.0'
 
   s.source_files = 'HPLibRTMP/Classes/**/*'
-  s.public_header_files = 'HPLibRTMP/Classes/**/*.h'
+  s.public_header_files = 'Sources/HPLibRTMP/**/*.h'
   
   s.dependency 'pili-librtmp'
 end
